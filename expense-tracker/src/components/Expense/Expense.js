@@ -5,6 +5,7 @@ import ExpensesFilter from '../ExpenseFilter/ExpenseFilter';
 
 import './Expense.css'
 import Card from '../UI/Card';
+import ExpenseList from '../ExpenseList/ExpenseList';
 
 const Expense = (props) => {
 
@@ -19,19 +20,6 @@ const Expense = (props) => {
         setFilterYear(selectedYear)
     }
 
-    let expenseContent = <p>No expenses found!</p>
-
-    if (filteredByYear.length > 0) {
-        expenseContent = filteredByYear.map((expense) => (
-            <ExpenseItem
-                key={expense.id}
-                title={expense.title}
-                amount={expense.amount}
-                date={expense.date}
-            />
-        ))
-    }
-
     return (
         <Card className="expenses">
             <ExpensesFilter
@@ -39,7 +27,7 @@ const Expense = (props) => {
                 onChangeFilter={filterChangeHandler}
             />
 
-            {expenseContent}
+            <ExpenseList items={filteredByYear} />
 
         </Card>
     )
