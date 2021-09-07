@@ -4,14 +4,14 @@ import Card from '../UI/Card/Card'
 
 import classes from "./AddUser.module.css"
 
-const AddUser = () => {
+const AddUser = (props) => {
 
     const [enteredUsername, setEnteredUsername] = useState('')
     const [enteredAge, setEnteredAge] = useState('')
 
     const addUserHandler = (event) => {
         event.preventDefault()
-        
+
         if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
             return;
         }
@@ -19,7 +19,7 @@ const AddUser = () => {
             return;
         }
 
-        console.log(enteredUsername, enteredAge)
+        props.onAddUser(enteredUsername, enteredAge)
         setEnteredUsername('')
         setEnteredAge('')
     }
