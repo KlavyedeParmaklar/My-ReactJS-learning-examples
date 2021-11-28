@@ -1,7 +1,12 @@
 import React from 'react'
 
 const AuthContext = React.createContext({
-    isLoggedIn: false
+    isLoggedIn: false,
+    onLogout: () => { }
 })
+
+const AuthContextProvider = (props) => {
+    return <AuthContext.Provider></AuthContext.Provider>
+}
 
 export default AuthContext
