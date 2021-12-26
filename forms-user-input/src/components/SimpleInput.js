@@ -1,47 +1,58 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 
 const SimpleInput = (props) => {
   const nameInputRef = useRef()
   const [enteredName, setEnteredName] = useState('')
-  const [enteredNameIsValid, setEnteredNameIsValid] = useState(true)
+  const [enteredNameIsValid, setEnteredNameIsValid] = useState(false)
+  const [enteredNameTouched, setEnteredNameTouched] = useState(false)
 
-  const nameInputChangeHandler = (event) => {
-    setEnteredName(event.target.value)
-  }
-
-  const formSubmissionHandler = (event) => {
-    event.preventDefault()
-
-    if (enteredName.trim() === '') {
-      setEnteredNameIsValid(false)
-      return
+  useEffect(() => {
+    if (enteredNameIsValid) {
+      console.log("Name is valid!")
     }
 
-    setEnteredNameIsValid(true)
-    const enteredValue = nameInputRef.current.value
-    setEnteredName('')
+}, [enteredNameIsValid])
+
+const nameInputChangeHandler = (event) => {
+  setEnteredName(event.target.value)
+}
+
+const formSubmissionHandler = (event) => {
+  event.preventDefault()
+
+  setEnteredNameTouched(true)
+
+  if (enteredName.trim() === '') {
+    setEnteredNameIsValid(false)
+    return
   }
 
-  const nameInputClasses = enteredNameIsValid ? 'form-control' : 'form-control invalid'
+  setEnteredNameIsValid(true)
+  const enteredValue = nameInputRef.current.value
+  setEnteredName('')
+}
 
-  return (
-    <form onSubmit={formSubmissionHandler}>
-      <div className={nameInputClasses}>
-        <label htmlFor='name'>Your Name</label>
-        <input
-          ref={nameInputRef}
-          type='text'
-          id='name'
-          onChange={nameInputChangeHandler}
-          value={enteredName}
-        />
-        {!enteredNameIsValid && <p className='error-text'>Name must not be empty!</p>}
-      </div>
-      <div className="form-actions">
-        <button>Submit</button>
-      </div>
-    </form>
-  );
+const nameInputIsvalid = !enteredNameIsValid && enteredNameTouched
+const nameInputClasses = nameInputIsvalid ? 'form-control invalid' : 'form-control'
+
+return (
+  <form onSubmit={formSubmissionHandler}>
+    <div className={nameInputClasses}>
+      <label htmlFor='name'>Your Name</label>
+      <input
+        ref={nameInputRef}
+        type='text'
+        id='name'
+        onChange={nameInputChangeHandler}
+        value={enteredName}
+      />
+      {nameInputIsvalid && <p className='error-text'>Name must not be empty!</p>}
+    </div>
+    <div className="form-actions">
+      <button>Submit</button>
+    </div>
+  </form>
+);
 };
 
 export default SimpleInput;
